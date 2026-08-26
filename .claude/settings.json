@@ -1,0 +1,90 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/*.g.*)",
+      "Read(**/*.freezed.*)",
+      "Read(**/*.mocks.*)",
+      "Read(**/*.pb.*)",
+      "Read(**/*.min.js)",
+      "Read(**/*.min.css)",
+      "Read(**/dist/**)",
+      "Read(**/build/**)",
+      "Read(**/node_modules/**)",
+      "Read(**/.dart_tool/**)",
+      "Read(**/__generated__/**)",
+      "Read(**/vendor/**)",
+      "Read(**/package-lock.json)",
+      "Read(**/yarn.lock)",
+      "Read(**/pnpm-lock.yaml)",
+      "Read(**/pubspec.lock)",
+      "Read(**/Cargo.lock)",
+      "Read(**/poetry.lock)",
+      "Read(**/go.sum)"
+    ],
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(bash scripts/gen-agents.sh:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/hooks/block-dangerous-commands.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/hooks/block-generated-file-edit.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/hooks/auto-format.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/hooks/inject-repo-memory.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/hooks/require-tests-before-done.sh",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  }
+}
