@@ -1,11 +1,12 @@
 ---
 name: maintain-architecture
-description: 'Create or update the living architecture document at .ai/memory/architecture.md (SWE.2) and record design decisions as ADR-lite entries. Use when a component/interface needs designing, overall structure changes, or requirements-engineer/project-manager need an architectural decision before proceeding.'
+description: "Create or update the living architecture document at .ai/memory/architecture.md (SWE.2) and record design decisions as ADR-lite entries. Use when a component/interface needs designing, overall structure changes, or requirements-engineer/project-manager need an architectural decision before proceeding."
 ---
 
 # Maintain Architecture (SWE.2)
 
 ## When to use
+
 - `.ai/memory/architecture.md` doesn't cover the area a request touches.
 - A request changes structure: a new component/interface, a changed data/signal flow, a
   new safety mechanism, or a shift in a previous decision.
@@ -13,6 +14,7 @@ description: 'Create or update the living architecture document at .ai/memory/ar
   before it can be sequenced.
 
 ## Procedure
+
 1. Read `.ai/memory/requirements.md` and the current `.ai/memory/architecture.md`.
 2. Check `.ai/safety/asil-manifest.md` for the element you're about to touch (see
    `.claude/skills/safety-governance/SKILL.md`).
@@ -27,6 +29,7 @@ description: 'Create or update the living architecture document at .ai/memory/ar
 5. Report a short summary — not the full document.
 
 ## Anti-patterns
+
 - Don't break a decision into implementation tasks — hand that to `project-manager`.
 - Don't record implementation-level detail (variable names, register addresses) here —
   that belongs in code/comments, not the architecture doc.

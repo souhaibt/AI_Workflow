@@ -1,11 +1,12 @@
 ---
 name: problem-and-change-management
-description: 'Log Problem Reports and Change Requests, perform impact analysis against the traceability matrix, and gate approval for changes to baselined work products (SUP.9, SUP.10). Use when a defect is found or a baselined item needs to change.'
+description: "Log Problem Reports and Change Requests, perform impact analysis against the traceability matrix, and gate approval for changes to baselined work products (SUP.9, SUP.10). Use when a defect is found or a baselined item needs to change."
 ---
 
 # Problem & Change Management (SUP.9 / SUP.10)
 
 ## Problem Reports (SUP.9)
+
 1. Log every defect/anomaly as a row in `.ai/memory/problem-reports.md`, whatever its
    source (test failure, field issue, review finding).
 2. Fill `ASIL impact` from the affected item's ASIL in `traceability.md` — never leave it
@@ -16,6 +17,7 @@ description: 'Log Problem Reports and Change Requests, perform impact analysis a
    Request and reference its ID in `Linked CR`.
 
 ## Change Requests (SUP.10)
+
 1. Log the CR in `.ai/memory/change-requests.md` with its trigger (a PR ID or a new
    need).
 2. Impact analysis: list every requirement/architecture element/unit/test the change
@@ -27,6 +29,7 @@ description: 'Log Problem Reports and Change Requests, perform impact analysis a
    (`requirements-engineer`/`software-architect`/`software-developer`/`test-engineer`).
 
 ## Anti-patterns
+
 - Don't skip the CR for a "small" change to a baselined item — size doesn't exempt it.
 - Don't merge a PR's root cause and a CR's impact analysis into one vague paragraph —
   they answer different questions (why did it break vs. what does fixing it touch).

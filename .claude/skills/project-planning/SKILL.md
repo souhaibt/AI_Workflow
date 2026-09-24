@@ -1,11 +1,12 @@
 ---
 name: project-planning
-description: 'Turn software requirements and architecture into a sequenced, ASPICE-tagged task breakdown and risk register in .ai/memory/plan.md (MAN.3). Use when starting new work that needs sequencing, or when the orchestrator needs tasks broken down before delegating.'
+description: "Turn software requirements and architecture into a sequenced, ASPICE-tagged task breakdown and risk register in .ai/memory/plan.md (MAN.3). Use when starting new work that needs sequencing, or when the orchestrator needs tasks broken down before delegating."
 ---
 
 # Project Planning (MAN.3)
 
 ## Procedure
+
 1. Read `.ai/memory/requirements.md` and `.ai/memory/architecture.md` — don't invent
    scope; if something needed isn't covered there, hand it back to the orchestrator to
    consult `requirements-engineer`/`software-architect` first.
@@ -22,6 +23,7 @@ description: 'Turn software requirements and architecture into a sequenced, ASPI
 5. Report a one-paragraph summary — not the full table.
 
 ## Anti-patterns
+
 - Don't create a single monolithic task — that defeats delegation and traceability.
 - Don't assign a task to a subagent whose tools/remit don't cover it (e.g. don't give a
   test-authoring task on an ASIL C item to `test-engineer` — that's human work; give

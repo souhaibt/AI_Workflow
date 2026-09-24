@@ -1,13 +1,13 @@
 ---
 name: safety-governance
-description: 'Defines the ASIL authorship/review gate this AI Layer enforces for a functional-safety (ISO 26262) project. Use before authoring, editing, or approving any requirement, architecture element, design, code unit, or test, and before marking any work product baselined.'
+description: "Defines the ASIL authorship/review gate this AI Layer enforces for a functional-safety (ISO 26262) project. Use before authoring, editing, or approving any requirement, architecture element, design, code unit, or test, and before marking any work product baselined."
 ---
 
 # Safety Governance (ISO 26262 / ASPICE)
 
 This project targets **ASIL-D**. This AI Layer is not a qualified tool under ISO 26262-8
 clause 11 for authoring safety-relevant work products. It assists with QM (non-safety)
-work directly, and with *reviewing* safety-relevant work — it never authors a
+work directly, and with _reviewing_ safety-relevant work — it never authors a
 safety-relevant work product itself. This skill is the canonical rule every subagent
 follows; don't reinvent it per-role.
 

@@ -63,17 +63,17 @@ policies, tenancy boundaries, payments, untrusted input. Don't spend one elsewhe
 
 Cross-session context is portable markdown in `.ai/memory/`, not chat history.
 
-| File                 | Contents                                                | Written by |
-| -------------------- | ---------------------------------------------------------| ---------- |
-| `requirements.md`    | Software requirements (SWE.1), ASIL-tagged                | `requirements-engineer` |
-| `architecture.md`    | System design (SWE.2) + append-only ADR decisions          | `software-architect` only |
-| `plan.md`            | Task breakdown (MAN.3) + risk register                     | `project-manager` writes; task owner updates status |
-| `traceability.md`    | Req → design → unit → test trace matrix                    | shared, per-column |
-| `baselines.md`       | Configuration items + baseline history (SUP.8)              | `configuration-manager` |
-| `problem-reports.md` | Defect log (SUP.9)                                           | `change-and-problem-manager` |
-| `change-requests.md` | Change request log + impact analysis (SUP.10)                | `change-and-problem-manager` |
-| `repo.md`            | Conventions, coding standard, tooling decisions, gotchas    | anyone, when durable |
-| `log.md`             | One line per session, newest first                           | anyone, at end of turn |
+| File                 | Contents                                                 | Written by                                          |
+| -------------------- | -------------------------------------------------------- | --------------------------------------------------- |
+| `requirements.md`    | Software requirements (SWE.1), ASIL-tagged               | `requirements-engineer`                             |
+| `architecture.md`    | System design (SWE.2) + append-only ADR decisions        | `software-architect` only                           |
+| `plan.md`            | Task breakdown (MAN.3) + risk register                   | `project-manager` writes; task owner updates status |
+| `traceability.md`    | Req → design → unit → test trace matrix                  | shared, per-column                                  |
+| `baselines.md`       | Configuration items + baseline history (SUP.8)           | `configuration-manager`                             |
+| `problem-reports.md` | Defect log (SUP.9)                                       | `change-and-problem-manager`                        |
+| `change-requests.md` | Change request log + impact analysis (SUP.10)            | `change-and-problem-manager`                        |
+| `repo.md`            | Conventions, coding standard, tooling decisions, gotchas | anyone, when durable                                |
+| `log.md`             | One line per session, newest first                       | anyone, at end of turn                              |
 
 Read `repo.md`, `requirements.md`, and `plan.md` before starting; `architecture.md` and
 `traceability.md` for anything requirement- or design-adjacent. Update what changed before
@@ -83,17 +83,17 @@ memory; summarize and link.
 
 ## Agents
 
-| Agent                        | Owns                                                    | Tier      |
-| ---------------------------- | -------------------------------------------------------- | --------- |
-| `orchestrator`                | delegates dynamically; enforces the ASIL gate            | reasoning |
-| `project-manager`              | task sequencing + risk register (MAN.3)                  | reasoning |
-| `requirements-engineer`        | software requirements + traceability (SWE.1)             | reasoning |
-| `software-architect`           | architecture + ASIL allocation (SWE.2)                    | reasoning |
-| `software-developer`           | unit construction, QM only (SWE.3)                        | standard  |
-| `test-engineer`                | unit/integration/qualification test (SWE.4/5/6)           | standard  |
-| `quality-assurance`            | read-only process/traceability audit (SUP.1)              | reasoning |
-| `configuration-manager`        | configuration items + baselines (SUP.8)                   | standard  |
-| `change-and-problem-manager`   | problem reports + change requests (SUP.9/SUP.10)          | standard  |
+| Agent                        | Owns                                             | Tier      |
+| ---------------------------- | ------------------------------------------------ | --------- |
+| `orchestrator`               | delegates dynamically; enforces the ASIL gate    | reasoning |
+| `project-manager`            | task sequencing + risk register (MAN.3)          | reasoning |
+| `requirements-engineer`      | software requirements + traceability (SWE.1)     | reasoning |
+| `software-architect`         | architecture + ASIL allocation (SWE.2)           | reasoning |
+| `software-developer`         | unit construction, QM only (SWE.3)               | standard  |
+| `test-engineer`              | unit/integration/qualification test (SWE.4/5/6)  | standard  |
+| `quality-assurance`          | read-only process/traceability audit (SUP.1)     | reasoning |
+| `configuration-manager`      | configuration items + baselines (SUP.8)          | standard  |
+| `change-and-problem-manager` | problem reports + change requests (SUP.9/SUP.10) | standard  |
 
 This project targets **ASIL-D** under ASPICE. The non-negotiable on top of everything
 else in this file: any requirement, architecture element, unit, or test not explicitly

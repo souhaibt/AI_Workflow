@@ -8,7 +8,7 @@ Given a role name, one-line responsibility, and model tier, scaffold a new subag
 
 **First, push back if the role isn't warranted.** The roster is deliberately consolidated —
 SWE.4/5/6 share `test-engineer` and SUP.9/10 share `change-and-problem-manager` — because the
-actual ISO 26262 independence requirement is about the accountable *human*, not which AI
+actual ISO 26262 independence requirement is about the accountable _human_, not which AI
 persona ran a command. Before creating a new role, check whether the work is better served by:
 
 - a task delegated to an existing role (most ASPICE process areas already have an owner), or
@@ -36,6 +36,7 @@ If a new role really is right:
    Follow the existing sources for body shape: a short role statement, `## Constraints` as hard
    rules rather than advice, and `## Approach` pointing at a skill instead of restating it.
    Keep it under ~40 lines — it is loaded in full every time the role is invoked.
+
 3. Run `bash scripts/gen-agents.sh` and confirm it reports the new count.
 4. If the role needs a repeatable multi-step procedure, add
    `.claude/skills/<short-verb-phrase>/SKILL.md` — shared by both tools, never duplicated per tool.

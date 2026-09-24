@@ -1,6 +1,6 @@
 ---
 name: work-product-audit
-description: 'Audit ASPICE work products for process conformance: traceability completeness, ASIL-authorship compliance, and reviewer independence (SUP.1). Use before any task or baseline is marked done.'
+description: "Audit ASPICE work products for process conformance: traceability completeness, ASIL-authorship compliance, and reviewer independence (SUP.1). Use before any task or baseline is marked done."
 ---
 
 # Work Product Audit (SUP.1)
@@ -8,6 +8,7 @@ description: 'Audit ASPICE work products for process conformance: traceability c
 Read-only. You report findings; you never edit a work product yourself.
 
 ## Checklist
+
 - **Traceability**: every row in `.ai/memory/requirements.md` has a corresponding entry
   in `.ai/memory/traceability.md` with a design element, unit, and the test levels
   appropriate to its ASIL.
@@ -22,6 +23,7 @@ Read-only. You report findings; you never edit a work product yourself.
   field).
 
 ## Output Format
+
 Findings grouped **Critical** (blocks baseline/done) / **Warnings** / **Suggestions**,
 each naming the work product, the row/element, and exactly what a human needs to do.
 Omit empty categories.

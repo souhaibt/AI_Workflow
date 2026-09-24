@@ -7,20 +7,20 @@ own for tools that read only `AGENTS.md` (Cursor, Windsurf, etc.).
 
 ## What's in here
 
-| Path                                             | Purpose                                                                                                                                         |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `AGENTS.md` / `CLAUDE.md`                        | Always-on project instructions — self-sufficient, so a tool that reads nothing else still gets the non-negotiables                               |
-| `.ai/agents/`                                    | **Source of truth** for the subagent roster (one file per agent, tool-neutral)                                                                   |
-| `.ai/memory/`                                    | Portable cross-session memory: requirements, architecture, plan, traceability, baselines, problem reports, change requests, repo conventions, log |
-| `.ai/safety/asil-manifest.md`                    | The QM-vs-ASIL authorship allowlist — default-deny, hook-protected, human-edited only                                                            |
-| `.ai/config/commands.sh`                         | The one place your real build/test/MISRA-check/format commands live; hooks read from it                                                          |
-| `.claude/skills/`                                | On-demand multi-step procedures, read by **both** Copilot and Claude Code from this one location                                                 |
-| `.claude/agents/` `.github/agents/`              | **Generated** per-tool dialects of `.ai/agents/` — never hand-edit                                                                               |
-| `scripts/gen-agents.sh`                          | Emits both dialects from `.ai/agents/`; `--check` fails if they're stale                                                                         |
+| Path                                             | Purpose                                                                                                                                               |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AGENTS.md` / `CLAUDE.md`                        | Always-on project instructions — self-sufficient, so a tool that reads nothing else still gets the non-negotiables                                    |
+| `.ai/agents/`                                    | **Source of truth** for the subagent roster (one file per agent, tool-neutral)                                                                        |
+| `.ai/memory/`                                    | Portable cross-session memory: requirements, architecture, plan, traceability, baselines, problem reports, change requests, repo conventions, log     |
+| `.ai/safety/asil-manifest.md`                    | The QM-vs-ASIL authorship allowlist — default-deny, hook-protected, human-edited only                                                                 |
+| `.ai/config/commands.sh`                         | The one place your real build/test/MISRA-check/format commands live; hooks read from it                                                               |
+| `.claude/skills/`                                | On-demand multi-step procedures, read by **both** Copilot and Claude Code from this one location                                                      |
+| `.claude/agents/` `.github/agents/`              | **Generated** per-tool dialects of `.ai/agents/` — never hand-edit                                                                                    |
+| `scripts/gen-agents.sh`                          | Emits both dialects from `.ai/agents/`; `--check` fails if they're stale                                                                              |
 | `scripts/hooks/*.sh`                             | Shared guardrails: destructive-command blocking, generated-file protection, **ASIL authorship gate**, auto-format, test-before-done, memory injection |
-| `.github/prompts/`                               | Slash-command entry points (`/new-feature`, `/new-agent-role`)                                                                                   |
-| `.github/instructions/`                          | File-scoped guidance via `applyTo` globs (MISRA C, safety coding, testing)                                                                       |
-| `.github/hooks/*.json` / `.claude/settings.json` | Thin per-tool wiring for the same hook scripts, plus Claude's `permissions` block                                                                |
+| `.github/prompts/`                               | Slash-command entry points (`/new-feature`, `/new-agent-role`)                                                                                        |
+| `.github/instructions/`                          | File-scoped guidance via `applyTo` globs (MISRA C, safety coding, testing)                                                                            |
+| `.github/hooks/*.json` / `.claude/settings.json` | Thin per-tool wiring for the same hook scripts, plus Claude's `permissions` block                                                                     |
 
 ## How it works
 
@@ -30,16 +30,16 @@ own for tools that read only `AGENTS.md` (Cursor, Windsurf, etc.).
    delegation is centralized rather than ad hoc.
 2. The roster mirrors ASPICE process areas, not repo areas:
 
-   | Agent                        | Owns                                          | Tier      |
-   | ----------------------------- | ---------------------------------------------- | --------- |
-   | `project-manager`              | task sequencing + risk register (MAN.3)        | reasoning |
-   | `requirements-engineer`        | software requirements + traceability (SWE.1)   | reasoning |
-   | `software-architect`           | architecture + ASIL allocation (SWE.2)         | reasoning |
-   | `software-developer`           | unit construction, QM only (SWE.3)             | standard  |
-   | `test-engineer`                | unit/integration/qualification test (SWE.4/5/6)| standard  |
-   | `quality-assurance`            | read-only process/traceability audit (SUP.1)   | reasoning |
-   | `configuration-manager`        | configuration items + baselines (SUP.8)        | standard  |
-   | `change-and-problem-manager`   | problem reports + change requests (SUP.9/10)   | standard  |
+   | Agent                        | Owns                                            | Tier      |
+   | ---------------------------- | ----------------------------------------------- | --------- |
+   | `project-manager`            | task sequencing + risk register (MAN.3)         | reasoning |
+   | `requirements-engineer`      | software requirements + traceability (SWE.1)    | reasoning |
+   | `software-architect`         | architecture + ASIL allocation (SWE.2)          | reasoning |
+   | `software-developer`         | unit construction, QM only (SWE.3)              | standard  |
+   | `test-engineer`              | unit/integration/qualification test (SWE.4/5/6) | standard  |
+   | `quality-assurance`          | read-only process/traceability audit (SUP.1)    | reasoning |
+   | `configuration-manager`      | configuration items + baselines (SUP.8)         | standard  |
+   | `change-and-problem-manager` | problem reports + change requests (SUP.9/10)    | standard  |
 
 3. **The ASIL authorship gate is the load-bearing rule.** Anything not explicitly
    allowlisted as `QM` in `.ai/safety/asil-manifest.md` is safety-relevant by default —
@@ -85,18 +85,18 @@ identifiers — but edit them in `scripts/gen-agents.sh`, not in the generated f
 
 ## Skills
 
-| Skill                            | When                                                                              |
-| --------------------------------- | ------------------------------------------------------------------------------------ |
-| `safety-governance`               | Before authoring/editing/approving anything — the ASIL authorship gate, read by all |
-| `project-planning`                | Sequencing requirements/architecture into a tagged task breakdown (MAN.3)            |
-| `elicit-requirements`             | Deriving a software requirement from a system/safety requirement (SWE.1)             |
-| `maintain-architecture`           | Authoring/updating the architecture doc and ADR-lite decisions (SWE.2)               |
-| `implement-task`                  | Executing one QM task from the plan (SWE.3)                                          |
-| `verify-and-test`                 | Unit/integration/qualification testing with ASIL-scaled coverage (SWE.4/5/6)         |
-| `work-product-audit`              | Traceability + ASIL-authorship + independence audit (SUP.1)                          |
-| `configuration-management`        | Baselining once work products are approved (SUP.8)                                   |
-| `problem-and-change-management`   | Logging/impact-analyzing Problem Reports and Change Requests (SUP.9/SUP.10)          |
-| `update-memory`                   | Writing a durable fact back to `.ai/memory/`                                         |
+| Skill                           | When                                                                                |
+| ------------------------------- | ----------------------------------------------------------------------------------- |
+| `safety-governance`             | Before authoring/editing/approving anything — the ASIL authorship gate, read by all |
+| `project-planning`              | Sequencing requirements/architecture into a tagged task breakdown (MAN.3)           |
+| `elicit-requirements`           | Deriving a software requirement from a system/safety requirement (SWE.1)            |
+| `maintain-architecture`         | Authoring/updating the architecture doc and ADR-lite decisions (SWE.2)              |
+| `implement-task`                | Executing one QM task from the plan (SWE.3)                                         |
+| `verify-and-test`               | Unit/integration/qualification testing with ASIL-scaled coverage (SWE.4/5/6)        |
+| `work-product-audit`            | Traceability + ASIL-authorship + independence audit (SUP.1)                         |
+| `configuration-management`      | Baselining once work products are approved (SUP.8)                                  |
+| `problem-and-change-management` | Logging/impact-analyzing Problem Reports and Change Requests (SUP.9/SUP.10)         |
+| `update-memory`                 | Writing a durable fact back to `.ai/memory/`                                        |
 
 ## Bootstrapping into a new project
 
