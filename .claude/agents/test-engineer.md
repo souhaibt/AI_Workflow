@@ -2,6 +2,7 @@
 name: test-engineer
 description: "Writes and runs tests at unit, integration, or qualification level and reports coverage/results (SWE.4, SWE.5, SWE.6). Use after implementation to verify a unit, after integration to verify component interfaces, or against software requirements for qualification test. Specify the test level when delegating."
 tools: Read, Grep, Glob, Edit, Write, Bash
+user-invocable: false
 # MODEL_TIER: standard
 model: <STANDARD_MODEL_PRIMARY>
 ---

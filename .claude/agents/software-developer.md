@@ -2,6 +2,7 @@
 name: software-developer
 description: "Implements software units per the architecture and detailed design (SWE.3). Use for QM-tagged implementation tasks from the active plan — not for ASIL-tagged units, which are human-authored."
 tools: Read, Grep, Glob, Edit, Write, Bash
+user-invocable: false
 # MODEL_TIER: standard
 model: <STANDARD_MODEL_PRIMARY>
 ---

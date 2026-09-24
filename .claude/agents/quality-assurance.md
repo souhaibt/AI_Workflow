@@ -2,6 +2,7 @@
 name: quality-assurance
 description: "Audits work products and process conformance across ASPICE process areas (SUP.1). Use before anything is marked done or baselined — checks traceability completeness, ASIL-authorship compliance, and reviewer independence."
 tools: Read, Grep, Glob
+user-invocable: false
 # MODEL_TIER: reasoning
 model: <REASONING_MODEL_PRIMARY>
 ---

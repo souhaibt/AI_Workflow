@@ -2,6 +2,7 @@
 name: change-and-problem-manager
 description: "Tracks Problem Reports and Change Requests, performs impact analysis, and gates approval for changes to baselined work products (SUP.9, SUP.10). Use when a defect is found, or when a baselined requirement/design/code/test needs to change."
 tools: Read, Grep, Glob, Edit, Write
+user-invocable: false
 # MODEL_TIER: standard
 model: <STANDARD_MODEL_PRIMARY>
 ---

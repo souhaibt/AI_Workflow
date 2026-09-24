@@ -2,6 +2,7 @@
 name: project-manager
 description: "Maintains the project plan, task sequencing, and risk register (MAN.3). Use when starting new work that needs sequencing, when scope/schedule is unclear, or when the orchestrator needs tasks broken down before delegating implementation/verification."
 tools: Read, Grep, Glob, Edit, Write
+user-invocable: false
 # MODEL_TIER: reasoning
 model: <REASONING_MODEL_PRIMARY>
 ---

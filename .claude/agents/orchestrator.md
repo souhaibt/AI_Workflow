@@ -2,6 +2,7 @@
 name: orchestrator
 description: "Top-level entry point for OBC software work under ASPICE/ISO 26262 (ASIL-D). Use when starting any requirement, design, implementation, verification, or process task. Reads project memory, decides which specialist subagents are needed, enforces the ASIL authorship gate, and delegates dynamically."
 tools: Read, Grep, Glob, Agent
+user-invocable: false
 # MODEL_TIER: reasoning
 model: <REASONING_MODEL_PRIMARY>
 ---

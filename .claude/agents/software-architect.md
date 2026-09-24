@@ -2,6 +2,7 @@
 name: software-architect
 description: "Owns the software architecture; creates and maintains .ai/memory/architecture.md, allocates ASIL and safety mechanisms, and records design decisions as ADR-lite entries (SWE.2). Use when starting a new component/interface, when overall structure changes, or when project-manager/requirements-engineer need an architectural decision first."
 tools: Read, Grep, Glob, Edit, Write
+user-invocable: false
 # MODEL_TIER: reasoning
 model: <REASONING_MODEL_PRIMARY>
 ---

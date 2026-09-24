@@ -2,6 +2,7 @@
 name: configuration-manager
 description: "Manages configuration items, baselines, and the ASIL authorship manifest's integrity (SUP.8). Use when work products are ready to be baselined, when a new configuration item is introduced, or when the QM/ASIL manifest needs a proposed change."
 tools: Read, Grep, Glob, Edit, Write
+user-invocable: false
 # MODEL_TIER: standard
 model: <STANDARD_MODEL_PRIMARY>
 ---
