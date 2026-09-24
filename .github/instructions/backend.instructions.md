@@ -1,10 +1,10 @@
 ---
-description: "Backend/API/service code conventions. Use when implementing or reviewing server-side logic, endpoints, or integrations."
-applyTo: "<backend source glob, e.g. src/server/**, apps/api/**>"
+description: "Superseded — this project has no web backend/frontend split. See misra-c.instructions.md and safety-governance (security.instructions.md) instead. Safe to delete."
 ---
 
-# Backend Conventions
+# Superseded
 
-`<Fill in: error handling pattern, API response shape, auth middleware usage, logging
-conventions, layering (controller/service/repository), dependency injection pattern, etc.
-Keep this to conventions not already enforced by a linter.>`
+This file is left over from a generic full-stack template and does not apply to this
+embedded/ASPICE project. Use `.github/instructions/misra-c.instructions.md` and
+`.github/instructions/security.instructions.md` (safety coding conventions) instead. Safe
+to delete.

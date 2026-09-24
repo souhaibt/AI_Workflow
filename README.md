@@ -1,9 +1,9 @@
 # AI Layer — Reusable Agentic Dev Workflow Template
 
-A stack-agnostic set of files that gives a project a multi-agent, multi-model development
-workflow, tuned for **code quality per token spent**. Works natively with **Claude Code** and
-**GitHub Copilot (VS Code)**, and stands on its own for tools that read only `AGENTS.md`
-(Cursor, Windsurf, etc.).
+An ASPICE-aligned, ASIL-D-targeting multi-agent development workflow for this OBC
+(On-Board Charger) embedded software project, tuned for **code quality per token spent**.
+Works natively with **Claude Code** and **GitHub Copilot (VS Code)**, and stands on its
+own for tools that read only `AGENTS.md` (Cursor, Windsurf, etc.).
 
 ## What's in here
 
@@ -11,42 +11,49 @@ workflow, tuned for **code quality per token spent**. Works natively with **Clau
 | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `AGENTS.md` / `CLAUDE.md`                        | Always-on project instructions — self-sufficient, so a tool that reads nothing else still gets the non-negotiables                               |
 | `.ai/agents/`                                    | **Source of truth** for the subagent roster (one file per agent, tool-neutral)                                                                   |
-| `.ai/memory/`                                    | Portable cross-session memory: `architecture.md` (design + ADR log), `repo.md` (conventions, gotchas), `plan.md` (current tasks), `log.md`       |
-| `.ai/config/commands.sh`                         | The one place your real lint/typecheck/test/format commands live; hooks read from it                                                             |
+| `.ai/memory/`                                    | Portable cross-session memory: requirements, architecture, plan, traceability, baselines, problem reports, change requests, repo conventions, log |
+| `.ai/safety/asil-manifest.md`                    | The QM-vs-ASIL authorship allowlist — default-deny, hook-protected, human-edited only                                                            |
+| `.ai/config/commands.sh`                         | The one place your real build/test/MISRA-check/format commands live; hooks read from it                                                          |
 | `.claude/skills/`                                | On-demand multi-step procedures, read by **both** Copilot and Claude Code from this one location                                                 |
 | `.claude/agents/` `.github/agents/`              | **Generated** per-tool dialects of `.ai/agents/` — never hand-edit                                                                               |
 | `scripts/gen-agents.sh`                          | Emits both dialects from `.ai/agents/`; `--check` fails if they're stale                                                                         |
-| `scripts/hooks/*.sh`                             | Shared guardrails: destructive-command blocking, generated-file protection, auto-format, test-before-done, memory injection                      |
+| `scripts/hooks/*.sh`                             | Shared guardrails: destructive-command blocking, generated-file protection, **ASIL authorship gate**, auto-format, test-before-done, memory injection |
 | `.github/prompts/`                               | Slash-command entry points (`/new-feature`, `/new-agent-role`)                                                                                   |
-| `.github/instructions/`                          | File-scoped guidance via `applyTo` globs                                                                                                         |
+| `.github/instructions/`                          | File-scoped guidance via `applyTo` globs (MISRA C, safety coding, testing)                                                                       |
 | `.github/hooks/*.json` / `.claude/settings.json` | Thin per-tool wiring for the same hook scripts, plus Claude's `permissions` block                                                                |
 
 ## How it works
 
-1. **You drive the main session directly — there is no orchestrator agent.** A coordinator that
-   can't read code is just one more cold context between you and the work.
-2. When a task genuinely belongs to someone else, you delegate to one of four roles:
+1. **The `orchestrator` is the entry point.** Unlike a generic feature-work template, ASPICE
+   work has a real dependency chain (SWE.1 → SWE.2 → SWE.3 → SWE.4/5/6) and hard
+   independence requirements — a single "whoever's free" session doesn't satisfy that, so
+   delegation is centralized rather than ad hoc.
+2. The roster mirrors ASPICE process areas, not repo areas:
 
-   | Agent         | Owns                                          | Tier      |
-   | ------------- | --------------------------------------------- | --------- |
-   | `planner`     | design decisions + task breakdown             | reasoning |
-   | `implementer` | application code + its tests                  | standard  |
-   | `data`        | schema, migrations, access policies           | reasoning |
-   | `reviewer`    | read-only diff review, including security     | reasoning |
+   | Agent                        | Owns                                          | Tier      |
+   | ----------------------------- | ---------------------------------------------- | --------- |
+   | `project-manager`              | task sequencing + risk register (MAN.3)        | reasoning |
+   | `requirements-engineer`        | software requirements + traceability (SWE.1)   | reasoning |
+   | `software-architect`           | architecture + ASIL allocation (SWE.2)         | reasoning |
+   | `software-developer`           | unit construction, QM only (SWE.3)             | standard  |
+   | `test-engineer`                | unit/integration/qualification test (SWE.4/5/6)| standard  |
+   | `quality-assurance`            | read-only process/traceability audit (SUP.1)   | reasoning |
+   | `configuration-manager`        | configuration items + baselines (SUP.8)        | standard  |
+   | `change-and-problem-manager`   | problem reports + change requests (SUP.9/10)   | standard  |
 
-   `implementer` is meant to be **cloned per repo area** (`app/`, `api/`, …) — that's the
-   extension point, and it's why the roster is small.
-3. **Split work by repo area, not tech layer.** One vertical slice (schema + logic + UI + tests)
-   owned by one agent beats four layer-shaped tasks: every extra owner is a cold context that
-   re-pays the cost of discovering the codebase. Context re-acquisition, not generation, is where
-   the token budget actually goes.
-4. Agents read and write `.ai/memory/*.md` instead of relying on chat history, so a fresh session
-   resumes where the last one stopped.
-5. **Deterministic gates carry the quality load.** Linters, typecheckers, and tests cost nothing
-   per run and catch more than a reading pass. An LLM review pass is reserved for what no linter
-   can check — auth, access policies, tenancy boundaries, payments, untrusted input.
-6. Hooks enforce what instructions can only request: destructive commands blocked, generated
-   files unwritable, edits auto-formatted, work not markable done while gates fail.
+3. **The ASIL authorship gate is the load-bearing rule.** Anything not explicitly
+   allowlisted as `QM` in `.ai/safety/asil-manifest.md` is safety-relevant by default —
+   every agent may only read/review it, never author or edit it. A human authors it; AI
+   reviews it. See `.claude/skills/safety-governance/SKILL.md`.
+4. Agents read and write `.ai/memory/*.md` instead of relying on chat history, so a fresh
+   session resumes where the last one stopped.
+5. **Deterministic gates carry the quality load.** Build, MISRA static analysis, and test
+   commands cost nothing per run and catch more than a reading pass. `quality-assurance`'s
+   audit is reserved for what no linter can check — traceability, ASIL-authorship
+   compliance, reviewer independence.
+6. Hooks enforce what instructions can only request: destructive commands blocked,
+   generated files unwritable, non-allowlisted ASIL paths unwritable by any agent, edits
+   auto-formatted, work not markable done while gates fail.
 
 ## The agent roster is generated
 
@@ -54,7 +61,7 @@ Each agent is authored **once** at `.ai/agents/<name>.md` with tool-neutral fron
 
 ```yaml
 ---
-name: implementer
+name: software-developer
 description: <keyword-rich, with a "Use when..." clause>
 tier: reasoning | standard | fast
 tools: read, search, edit, execute, delegate
@@ -69,19 +76,27 @@ next generator run overwrites it.
 
 ## Model routing
 
-Agent sources carry a `tier:` field (`reasoning` / `standard` / `fast`) which the generator turns
-into `# MODEL_TIER:` comments and `model:` placeholders. **Before using this template, replace
-every `<REASONING|STANDARD|FAST_MODEL...>` placeholder** with real model identifiers — but edit
-them in `scripts/gen-agents.sh`, not in the generated files. Grep for `MODEL_TIER` to find them.
+Agent sources carry a `tier:` field (`reasoning` / `standard`; `fast` is unused on this
+project — nothing in an ASIL-D workflow is low-stakes enough to warrant a cheap tier) which
+the generator turns into `# MODEL_TIER:` comments and `model:` placeholders. **Before using
+this template, replace every `<REASONING|STANDARD_MODEL...>` placeholder** with real model
+identifiers — but edit them in `scripts/gen-agents.sh`, not in the generated files. Grep for
+`MODEL_TIER` to find them.
 
 ## Skills
 
-| Skill            | When                                                                 |
-| ---------------- | -------------------------------------------------------------------- |
-| `plan-feature`   | Turning a request into a task plan; recording an architecture decision |
-| `implement-task` | Executing one task from the plan through the gates                    |
-| `review-diff`    | Reviewing a diff — including whether the review is worth running      |
-| `update-memory`  | Writing a durable fact back to `.ai/memory/`                          |
+| Skill                            | When                                                                              |
+| --------------------------------- | ------------------------------------------------------------------------------------ |
+| `safety-governance`               | Before authoring/editing/approving anything — the ASIL authorship gate, read by all |
+| `project-planning`                | Sequencing requirements/architecture into a tagged task breakdown (MAN.3)            |
+| `elicit-requirements`             | Deriving a software requirement from a system/safety requirement (SWE.1)             |
+| `maintain-architecture`           | Authoring/updating the architecture doc and ADR-lite decisions (SWE.2)               |
+| `implement-task`                  | Executing one QM task from the plan (SWE.3)                                          |
+| `verify-and-test`                 | Unit/integration/qualification testing with ASIL-scaled coverage (SWE.4/5/6)         |
+| `work-product-audit`              | Traceability + ASIL-authorship + independence audit (SUP.1)                          |
+| `configuration-management`        | Baselining once work products are approved (SUP.8)                                   |
+| `problem-and-change-management`   | Logging/impact-analyzing Problem Reports and Change Requests (SUP.9/SUP.10)          |
+| `update-memory`                   | Writing a durable fact back to `.ai/memory/`                                         |
 
 ## Bootstrapping into a new project
 
@@ -100,18 +115,27 @@ existing files. After copying:
 
 1. **`git init` the target if it isn't a repo yet.** The test gate and the reviewer both work
    from `git diff` — without a repo they degrade to no-ops (loudly, but still no-ops).
-2. Fill in `.ai/config/commands.sh` (`AI_LAYER_TEST_CMD`, `AI_LAYER_FORMAT_CMD`). This one file
-   un-inerts the format and test hooks; a leftover `<placeholder>` disables them.
+2. Fill in `.ai/config/commands.sh` (`AI_LAYER_TEST_CMD`, `AI_LAYER_FORMAT_CMD`,
+   `AI_LAYER_MISRA_CHECK_CMD`). This one file un-inerts the format/test/MISRA hooks; a
+   leftover `<placeholder>` disables them.
 3. Fill in the placeholders in `AGENTS.md` (stack, entry points, conventions).
-4. Replace the `MODEL_TIER` model placeholders in `scripts/gen-agents.sh`, then run
+4. Fill in `.ai/safety/asil-manifest.md`: list every QM (non-safety) path explicitly. Leave
+   everything else out — it defaults to safety-relevant (AI review-only) by design.
+5. Replace the `MODEL_TIER` model placeholders in `scripts/gen-agents.sh`, then run
    `bash scripts/gen-agents.sh`.
-5. Clone `.ai/agents/implementer.md` once per repo area, fill in each `## Scope`, and regenerate.
-6. Fill in `.ai/memory/architecture.md` and `.ai/memory/repo.md` with your real design and
-   conventions — put "never hand-edit these generated files" in `repo.md`'s gotchas.
-7. Point the `applyTo` globs in `.github/instructions/*.instructions.md` at your real directories.
-8. Make sure `bash` is on `PATH` (Git Bash on Windows) — hooks run via `bash scripts/hooks/*.sh`,
+6. **Delete the leftover generic-template files this repo shipped with before the ASPICE
+   roster existed** — I can't delete files this session, so do it manually:
+   `.ai/agents/{data,implementer,planner,reviewer}.md` (the generator would otherwise
+   regenerate agents for them alongside the real roster) and
+   `.claude/skills/{plan-feature,review-diff}/` (superseded by `project-planning`,
+   `elicit-requirements`, `work-product-audit`, etc.). Re-run the generator afterward.
+7. Fill in `.ai/memory/architecture.md`, `requirements.md`, and `repo.md` with your real
+   design, requirements, and conventions — put "never hand-edit generated files" and
+   "never hand-edit the ASIL manifest" in `repo.md`'s gotchas.
+8. Point the `applyTo` globs in `.github/instructions/*.instructions.md` at your real directories.
+9. Make sure `bash` is on `PATH` (Git Bash on Windows) — hooks run via `bash scripts/hooks/*.sh`,
    so no `chmod` is needed.
-9. Trust the workspace/folder so Copilot and Claude Code will load the agents and run the hooks.
+10. Trust the workspace/folder so Copilot and Claude Code will load the agents and run the hooks.
 
 Verify the guardrails actually fire with `bash scripts/hooks/test-hooks.sh`.
 
@@ -121,5 +145,9 @@ Use the `/new-agent-role` prompt, or add one file under `.ai/agents/` and run th
 If the role needs a repeatable procedure, add `.claude/skills/<short-verb-phrase>/SKILL.md` —
 shared by both tools, never duplicated per tool.
 
-Before adding a role, check that it isn't better served by cloning `implementer` with a
-different `## Scope`. Roles are cheap to write and expensive to run.
+Before adding a role, check it against the existing ASPICE process-area mapping — this
+roster was deliberately consolidated (SWE.4/5/6 and SUP.9/10 each share one role) to avoid
+one agent per process area costing tokens without adding real independence, since the
+actual ISO 26262 independence requirement is about the accountable human, not which AI
+persona ran a command. Split a role further only if it needs genuinely different tools or
+trust boundaries — not just a different process-area label.

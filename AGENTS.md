@@ -5,8 +5,8 @@
 
 ## Project
 
-- **Stack**: `<e.g. TypeScript/React web, Node/Express API, Postgres>`
-- **Entry points**: `<e.g. apps/web, apps/api>`
+- **Stack**: OBC (On-Board Charger) embedded software, AUTOSAR Classic Platform (C, OSEK/ECC OS). Targets ASIL-D under ISO 26262; ASPICE scope SWE.1–SWE.6, SUP.1/8/9/10, MAN.3.
+- **Entry points**: `<e.g. src/app, src/bsw, src/rte>`
 
 ## Commands
 
@@ -63,29 +63,45 @@ policies, tenancy boundaries, payments, untrusted input. Don't spend one elsewhe
 
 Cross-session context is portable markdown in `.ai/memory/`, not chat history.
 
-| File              | Contents                                    | Written by                             |
-| ----------------- | ------------------------------------------- | -------------------------------------- |
-| `repo.md`         | Conventions, tooling decisions, gotchas     | anyone, when durable                   |
-| `plan.md`         | Current acceptance criteria + task table    | `planner`; others update status only   |
-| `architecture.md` | System design + append-only ADR decisions   | `planner` only                         |
-| `log.md`          | One line per session, newest first          | anyone, at end of turn                 |
+| File                 | Contents                                                | Written by |
+| -------------------- | ---------------------------------------------------------| ---------- |
+| `requirements.md`    | Software requirements (SWE.1), ASIL-tagged                | `requirements-engineer` |
+| `architecture.md`    | System design (SWE.2) + append-only ADR decisions          | `software-architect` only |
+| `plan.md`            | Task breakdown (MAN.3) + risk register                     | `project-manager` writes; task owner updates status |
+| `traceability.md`    | Req → design → unit → test trace matrix                    | shared, per-column |
+| `baselines.md`       | Configuration items + baseline history (SUP.8)              | `configuration-manager` |
+| `problem-reports.md` | Defect log (SUP.9)                                           | `change-and-problem-manager` |
+| `change-requests.md` | Change request log + impact analysis (SUP.10)                | `change-and-problem-manager` |
+| `repo.md`            | Conventions, coding standard, tooling decisions, gotchas    | anyone, when durable |
+| `log.md`             | One line per session, newest first                           | anyone, at end of turn |
 
-Read `repo.md` and `plan.md` before starting; `architecture.md` only for structural work.
-Update what changed before finishing. Keep entries short — every future agent pays to read
-them. Never paste diffs or file contents into memory; summarize and link.
+Read `repo.md`, `requirements.md`, and `plan.md` before starting; `architecture.md` and
+`traceability.md` for anything requirement- or design-adjacent. Update what changed before
+finishing. Never author or finalize an ASIL-tagged row/element yourself — see
+`.claude/skills/safety-governance/SKILL.md`. Never paste diffs or file contents into
+memory; summarize and link.
 
 ## Agents
 
-| Agent         | Owns                                            | Tier      |
-| ------------- | ----------------------------------------------- | --------- |
-| `planner`     | design decisions + task breakdown               | reasoning |
-| `implementer` | application code + its tests (clone per area)   | standard  |
-| `data`        | schema, migrations, access policies             | reasoning |
-| `reviewer`    | read-only diff review incl. security            | reasoning |
+| Agent                        | Owns                                                    | Tier      |
+| ---------------------------- | -------------------------------------------------------- | --------- |
+| `orchestrator`                | delegates dynamically; enforces the ASIL gate            | reasoning |
+| `project-manager`              | task sequencing + risk register (MAN.3)                  | reasoning |
+| `requirements-engineer`        | software requirements + traceability (SWE.1)             | reasoning |
+| `software-architect`           | architecture + ASIL allocation (SWE.2)                    | reasoning |
+| `software-developer`           | unit construction, QM only (SWE.3)                        | standard  |
+| `test-engineer`                | unit/integration/qualification test (SWE.4/5/6)           | standard  |
+| `quality-assurance`            | read-only process/traceability audit (SUP.1)              | reasoning |
+| `configuration-manager`        | configuration items + baselines (SUP.8)                   | standard  |
+| `change-and-problem-manager`   | problem reports + change requests (SUP.9/SUP.10)          | standard  |
 
-Talk to them directly — there is no orchestrator layer. Split work by **repo area, not tech
-layer**: prefer one vertical slice (schema + logic + UI + tests) over one task per layer.
-Every extra owner is another cold context that re-pays discovery cost.
+This project targets **ASIL-D** under ASPICE. The non-negotiable on top of everything
+else in this file: any requirement, architecture element, unit, or test not explicitly
+allowlisted as `QM` in `.ai/safety/asil-manifest.md` is safety-relevant by default — every
+agent may only read/review it, never author or edit it. See
+`.claude/skills/safety-governance/SKILL.md`. This is enforced by instructions everywhere,
+and by a hard-deny hook (`block-unauthorized-asil-edit.sh`) for source-code paths and for
+the manifest itself.
 
 Roster source of truth is `.ai/agents/*.md`. Run `bash scripts/gen-agents.sh` after editing;
 it emits `.claude/agents/` and `.github/agents/`, which are **generated — never hand-edit**.

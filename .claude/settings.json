@@ -50,6 +50,16 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/hooks/block-unauthorized-asil-edit.sh",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "PostToolUse": [

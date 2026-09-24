@@ -1,24 +1,32 @@
 ---
 name: implement-task
-description: "Pull the next todo task from .ai/memory/plan.md, implement it with its tests, run the project's gates, and update its status. Use whenever an implementing agent works from the active plan."
+description: "Pull the next todo task from .ai/memory/plan.md, implement it per SWE.3, and update its status. Use whenever software-developer works from the active plan."
 ---
 
-# Implement Task
+# Implement Task (SWE.3)
 
 ## Procedure
 
-1. Read `.ai/memory/plan.md`. Take the task the orchestrating session named, or the
-   highest-priority `todo` row assigned to your role. Set it to `in-progress`.
-2. Read `.ai/memory/repo.md` for conventions. Skip `architecture.md` unless the task is
-   structural — it's the planner's document and most tasks don't need it.
-3. Implement the task **and the tests that cover it** in the same pass. There is no separate
-   test-writing agent; a task without a test that fails on regression is not done.
-4. Run the gates: `source .ai/config/commands.sh` then `$AI_LAYER_TEST_CMD`.
-   - Pass ⇒ set status to `review` (or `done` where no review step applies).
-   - Fail ⇒ fix it, or set status `blocked` with a one-line reason in `Notes`.
-     **Never mark `done` with a failing gate.**
-5. Append one line to `.ai/memory/log.md` per [update-memory](../update-memory/SKILL.md).
-6. Report: files touched, one line on the change, gate result. Not the diff.
+1. Read `.ai/memory/plan.md`. Take the task the orchestrator named, or the
+   highest-priority `todo` row assigned to `software-developer`. Set it to `in-progress`.
+2. Check `.ai/safety/asil-manifest.md` for the file(s) the task touches (see
+   `.claude/skills/safety-governance/SKILL.md`):
+   - **QM**: implement normally.
+   - **ASIL A–D**: stop — don't edit. Review the existing human-authored code instead,
+     set the task's status to `blocked` with a one-line reason (e.g. "ASIL C, needs
+     human author"), and report back to the orchestrator.
+3. Read `.ai/memory/repo.md` for conventions and `.ai/memory/architecture.md` for the
+   design this unit implements. Follow `.github/instructions/misra-c.instructions.md`
+   and `.github/instructions/safety.instructions.md`.
+4. Implement the task. Unit tests are `test-engineer`'s job (SWE.4), not yours — hand off
+   once your build passes; don't skip requesting it.
+5. Run the build command from `.ai/config/commands.sh`.
+   - Pass ⇒ set status to `review`.
+   - Fail ⇒ fix it, or set status `blocked` with a one-line reason in `Notes`. **Never
+     mark `done` yourself** — that's `quality-assurance`'s call after audit.
+6. Update `.ai/memory/plan.md` and append one line to `.ai/memory/log.md` per
+   [update-memory](../update-memory/SKILL.md).
+7. Report: files touched, one line on the change, build result. Not the diff.
 
 ## Reading discipline
 

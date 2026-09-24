@@ -1,16 +1,19 @@
 ---
-description: "Use when handling authentication, authorization, tenancy boundaries, user input, secrets, or payments. Covers OWASP-relevant conventions for this project."
+description: "Use when writing or reviewing embedded C code for the OBC. Covers ASIL-relevant coding conventions: defensive programming, resource discipline, and the MISRA deviation process."
 ---
 
-# Security Conventions
+# Safety Coding Conventions
 
-`<Fill in: auth mechanism, secret storage/retrieval, input validation library/pattern,
-dependency review process.>`
+`<Fill in: MISRA C:2012 deviation process/tooling, static analysis tool (Polyspace/QAC/
+Coverity), stack/heap budget, interrupt-safety rules specific to this OBC.>`
 
-- Never log secrets, tokens, or full request bodies containing user credentials.
-- Validate and sanitize all external input at the boundary (API handlers, form submissions,
-  file uploads).
-- A change to auth, access control, tenancy boundaries, or data exposure needs a `reviewer`
-  pass before it's marked done — these are exactly what linters can't catch.
-- Where the risk is expressible as a test, write the test instead of relying on the review.
-  An access-policy change ships with a test proving one tenant cannot read another's rows.
+- No dynamic memory allocation in ASIL-tagged code paths; prefer static allocation with
+  bounds known at compile time.
+- Defensive programming: check all function arguments and return values on ASIL-tagged
+  paths, even ones that "can't happen" — that assumption is exactly what HARA exists to
+  challenge.
+- Deterministic timing: no unbounded loops/recursion on ASIL-tagged paths; document
+  worst-case execution time for anything on a control-loop deadline.
+- A change to authentication of diagnostic/bootloader access, input parsing of
+  CAN/charging-protocol frames, or any ASIL-tagged path needs `quality-assurance`'s pass
+  before it's marked done — see `.claude/skills/work-product-audit/SKILL.md`.

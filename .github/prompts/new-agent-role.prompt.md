@@ -6,13 +6,13 @@ argument-hint: "<role-name> — <one-line responsibility> — <model tier: reaso
 
 Given a role name, one-line responsibility, and model tier, scaffold a new subagent.
 
-**First, push back if the role isn't warranted.** The roster is deliberately small because every
-role is a cold context that re-pays the cost of discovering the codebase. Before creating one,
-check whether the work is better served by:
+**First, push back if the role isn't warranted.** The roster is deliberately consolidated —
+SWE.4/5/6 share `test-engineer` and SUP.9/10 share `change-and-problem-manager` — because the
+actual ISO 26262 independence requirement is about the accountable *human*, not which AI
+persona ran a command. Before creating a new role, check whether the work is better served by:
 
-- cloning `.ai/agents/implementer.md` with a different `## Scope` (the usual answer for anything
-  area-shaped: a new service, a new app target), or
-- adding a skill that the existing roles invoke.
+- a task delegated to an existing role (most ASPICE process areas already have an owner), or
+- adding a skill that an existing role invokes.
 
 Say so if either fits, and stop there unless the user confirms they want a distinct role.
 

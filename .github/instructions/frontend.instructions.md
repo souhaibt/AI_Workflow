@@ -1,10 +1,8 @@
 ---
-description: "Frontend/UI/component code conventions. Use when implementing or reviewing client-side pages, components, styling, or state management."
-applyTo: "<frontend source glob, e.g. src/client/**, apps/web/**>"
+description: "Superseded — this project has no web backend/frontend split. See misra-c.instructions.md and safety-governance instead. Safe to delete."
 ---
 
-# Frontend Conventions
+# Superseded
 
-`<Fill in: component structure, styling approach, state management pattern, accessibility
-requirements, naming conventions. Keep this to conventions not already enforced by a
-linter.>`
+This file is left over from a generic full-stack template and does not apply to this
+embedded/ASPICE project. Safe to delete.

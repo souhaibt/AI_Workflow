@@ -9,6 +9,10 @@ export AI_LAYER_TEST_CMD="<e.g. npm run lint && npx tsc --noEmit && npm test -- 
 # Runs on every Edit/Write, with the changed file path appended.
 export AI_LAYER_FORMAT_CMD="<e.g. npx prettier --write>"
 
+# MISRA C:2012 static analysis command (e.g. Polyspace/QAC/Coverity CLI invocation).
+# software-developer/quality-assurance run this before reporting a unit build-passing.
+export AI_LAYER_MISRA_CHECK_CMD="<e.g. /opt/qac/qac --config misra-c-2012.rcf src/>"
+
 # Optional. Extended regex matched against project-relative paths to decide what counts as a
 # generated file (blocked from edits by block-generated-file-edit.sh). Leave unset to use the
 # built-in default, which already covers *.g.*, *.freezed.*, *.mocks.*, dist/, build/,
